@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
 
   def create
+    params[:comment].delete(:user_id) if params[:comment][:user_id].blank?
     comment = Comment.create(comment_params)
     redirect_to comment.post
   end
