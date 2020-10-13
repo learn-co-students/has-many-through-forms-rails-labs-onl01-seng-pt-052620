@@ -9,10 +9,10 @@ class Post < ActiveRecord::Base
   # accepts_nested_attributes_for :categories, reject_if: ->(attributes){ attributes['name'].blank? }, allow_destroy: true
   accepts_nested_attributes_for :categories, reject_if: :all_blank
 
-  def categories_attributes=(category_attributes)
-    category_attributes.values.each do |category_attribute|
-      category = Category.find_or_create_by(category_attribute)
-      self.categories << category
+  def comments_attributes=(comment_attributes)
+    comment_attributes.values.each do |comment_attribute|
+      comment = Comment.find_or_create_by(comment_attribute)
+      self.comment_attributes.build(comment: comment)
     end
   end
   
