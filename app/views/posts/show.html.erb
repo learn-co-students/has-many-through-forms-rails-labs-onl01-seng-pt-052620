@@ -1,1 +1,30 @@
+<%# create show page with category,title and content %>
+<h1><%= @post.title %></h1>
+<p><%= @post.content %></p>
 
+<h3>
+  <ul>
+    <%= @post.categories.each do |category| %>
+      <li><%= link_to(category.name, category) %></li>
+    <% end %>
+  </ul>
+</h3>
+<%# show all comments on post %>
+<h2>Comments:</h2>
+<ul>
+    <%= @post.comments.each do |comment| %>
+      <li><%= comment.user.username %> says: <%= comment.content %></li>
+    <% end %>
+  </ul>
+<%# new comment existing user%>
+<h2>Create A New Comment:</h2>
+
+<%= form_for @post.comments.build do |f|%>
+  <%= f.hidden_field :post_id %>
+  <%= f.text_area :content %>
+<br>
+  <%= f.collection_select :user_id, User.all, :id, :username, include_blank: "Choose a User" %>
+  <%= f.submit "Create Comment" %>
+  <% end %>
+
+  <%# create commend and add new user %>
