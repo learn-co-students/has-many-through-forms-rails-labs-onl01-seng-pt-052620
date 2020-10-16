@@ -1,1 +1,42 @@
+<h1><%= @post.title %></h1>
+<h2><%= @post.content %></h2>
 
+<%= @post.categories.map(&:name).join(', ') %>
+
+<% @post.users.each do |user| %>
+    <%= link_to user.username, user_path(user)  %>
+<% end %>
+
+
+<%= form_for @comment do |f| %>
+
+<%= f.hidden_field :post_id, value: @post.id %>
+    <p>
+        <%= f.label :content, "Content" %><br>
+        <%= f.text_area :content %>
+    </p>
+    <p>
+        <%= f.collection_select :user_id, User.all, :id, :username, prompt: true %>
+    </p>
+
+    <%= f.fields_for :user, User.new do |user_fields| %>
+        <p>
+            <%= user_fields.label :username, "Username" %>
+            <%= user_fields.text_field :username %>
+        </p>
+        <p>
+            <%= user_fields.label :email, "Email" %>
+            <%= user_fields.text_field :email %><br>
+        </p>
+    <% end %>
+    
+    <%= f.submit %>
+<% end %>
+
+<h3>Comments</h3>
+
+<% @post.comments.each do |comment| %>
+    <ul>
+        <li><%= comment.user.try(:username) %> says: <%= comment.content %></li>
+    </ul>
+<% end %>
