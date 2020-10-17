@@ -1,1 +1,16 @@
 
+<h1><%= @post.title %></h1>
+<p><%= @post.content %></p>
+
+<h3>Add a Comment</h3>
+<%= form_for @comment do |f| %>
+<p>
+<%= f.label :content, "Content" %>
+<%= f.text_area :content %>
+
+<%= f.label :user_id, "User" %>
+<%= f.collection_select(:user_id, User.all, :id, :username,  ) 
+ :user_id %>
+
+</p>
+<% end %>
