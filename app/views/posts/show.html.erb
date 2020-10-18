@@ -1,1 +1,32 @@
 
+  <%= form_for(@comment = Comment.new) do |f|%>
+    <label>New Comment</label>
+    <%= f.text_field :content %>
+    <%= f.fields_for :user, @comment.build_user do |user| %>
+        <%= user.text_field :username %>
+        <%end%>
+    <%= f.collection_select(:user_id, User.all, :id, :username, include_blank:true )%>
+    <%= f.hidden_field :post_id, value: @post.id %>
+    <%=f.submit%>
+<%end%>
+
+<% @post.comments.each do |comment|%>
+    <%= comment.user.username%> says: <%=comment.content%>
+<%end%>
+
+ <%= @post.categories.each do |category| %>
+    <li><%= link_to(category.name, category) %></li>
+ <% end %>
+
+ <%= @post.users.uniq.each do |user| %>
+    <li><%= link_to(user.username, user) %></li>
+ <% end %>
+
+
+
+
+<%=@post.title%>
+<%=@post.content%>
+
+
+
