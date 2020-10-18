@@ -1,0 +1,11 @@
+<div class=post-content>
+  <%= @category.name %>
+  <% @category.posts.each do |category_post| %>
+    <%= link_to category_post.title, post_path(category_post) %>
+    <%= category_post.content%>
+  <% end %>
+
+  
+
+</div>
+
