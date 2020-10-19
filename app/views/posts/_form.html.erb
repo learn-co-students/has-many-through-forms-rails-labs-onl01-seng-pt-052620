@@ -1,3 +1,61 @@
-<%= form_for post do |f| %>
-<%= f.label :title, "text" %>
+<%= form_for post do |f| %> 
+  <p>
+    <%= f.label :title %><br/>
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :content %><br/>
+    <%= f.text_area :content %>
+  </p>
+  <p>
+    <%= f.label :categories %>
+    <%= f.collection_check_boxes(:category_ids, Category.all, :id, :name) %>
+  </p>
+  <p>
+    <%= f.fields_for :categories, Category.new do |cf| %> 
+      <%= cf.label :name, 'or add a new category:' %><br/>
+      <%= cf.text_field :name %>
+    <% end %>
+  </p>
+  <p>
+  <%= f.submit %>
+  </p>
 <% end %>
+
+
+   <%# we can do categories because we have a categories_attributes= method    %> 
+  <%# 
+any file that starts with an _ in a views directory is a partial. 
+It's a local. We are passing a variable into the partial called post that refers to Post.new and this is why we can do form_for post in new.html.erb 
+
+When we're creating a form for a post we need to think about deciding what kind of input to choose based on what kind of a relationship we're modelling. 
+
+If we have inputs in a form_for categories we need to know what kind of relationship does a post have with a category. It is both has_many and has_many through. 
+Usually has_many_through has checkboxes. More info on this please. 
+
+What a checkbox is good for is allowing multiple inputs to go through, with multiple choices of category. Each post can have multiple choices of category. Also, each post can have multiple choices of category. It is common to have checkboxes in many to many relationships. 
+
+One of the methods that we get from has_many that is designed to help us with dealing with checkbox inputs. We can use collection_checkboxes form builder and the associated method like the first argument we put in when using collection_checkboxes. We use category_id and category_id= are the methods that the collection checkbox helper is going to be calling. 
+
+When you render the form the getter will determine which checkboxes start off as highlighted and then the setter will be called when you submit the form as the array of ids that come through params will be passed as an argument. In our it's example author_id= which is going to be used to create the join records and this works particularly for cases where your join model doesn't have any user submittable attributes and it's just a join model with the only purpose of creating an association between the two others. 
+
+When we do fields for categories we need to add in Category.new object that these fields can use. 
+The default behavior of this is it's going to give you fields for all the categories associated with this post which at this point there are going to be none that make sense.  We're writing a new post and there's not going to be any categories associated so we're not going to see any sets of fields, but if we have one there then we get a checkbox showing up.  
+
+attributes 
+{"0" => {"name" => "Ice Cream"}}
+
+attributes["0"] 
+{"name" => "Ice Cream"} 
+
+attributes.values
+[{"name" => "Ice Cream"}]
+
+attributes.values.first 
+{"name" => "Ice Cream"}
+
+Category.find_or_create_by(attributes.values.first) 
+This would create the category for us a
+We want to shovel it into self.categories (self being an instance of post in the Post model) 
+
+ %>

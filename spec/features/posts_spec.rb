@@ -6,13 +6,13 @@ describe 'Posts', type: 'feature' do
 
     before :each do
       @cool = Category.create(name: 'Cool')
-      visit 'posts/new'
+      visit 'posts/new'          
       fill_in('post_title', :with => 'Feeling Awesome')
       fill_in('post_content', :with => 'This is going to be an awesome post!')
     end
 
     it 'can create a post without a new category' do
-      click_button('Create Post')
+      click_button('Create Post') 
       @categories = Post.last.categories
       expect(@categories).to be_empty
       expect(page).to have_content('Feeling Awesome')
