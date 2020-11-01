@@ -1,1 +1,20 @@
-
+<%= @post.title %><br>
+<%= @post.content %><br>
+<%= @post.categories.each do |cat| %>
+    <%= cat.name %><br>
+<% end %>
+<%= @post.comments.each do |comm| %>
+    <%= comm.user.username %> says: <%= comm.content %><br>
+<% end %>
+<%= @post.users.uniq.each do |user| %>
+    <%= link_to user.username, user_path(user) %><br>
+<% end %>
+<%= form_for (@comment = Comment.new) do |f| %>
+    <%= f.text_field :content %><br>
+    <%= f.collection_select :user_id, User.all, :id, :username, :include_blank => true %>
+    <%= f.fields_for :user, @comment.build_user do |user| %>
+        <%= user.text_field :username %>
+    <% end %>
+    <input type = "hidden" name= "comment[post_id]" value = "<%= @post.id %>" >
+    <%= f.submit %>
+<% end %> 
